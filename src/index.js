@@ -4,6 +4,10 @@ import './index.css';
 import App from 'containers/pages/App';
 import * as serviceWorker from './serviceWorker';
 
+import firebaseConfig from "configs/firebase";
+
+console.log(firebaseConfig, '>>>> config fb');
+
 ReactDOM.render(
   <React.StrictMode>
     <App />
