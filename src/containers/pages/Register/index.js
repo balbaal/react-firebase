@@ -1,5 +1,6 @@
 import React from "react";
 import firebase from "configs/firebase";
+import { connect } from "react-redux";
 
 class Register extends React.Component {
   state = {
@@ -32,6 +33,11 @@ class Register extends React.Component {
       });
   };
 
+  componentDidMount() {
+    const { isLoading } = this.props;
+    console.log(isLoading, ">>> from global state");
+  }
+
   render() {
     const { email, password } = this.state;
 
@@ -58,4 +64,10 @@ class Register extends React.Component {
   }
 }
 
-export default Register;
+const mapStateToProps = (state) => {
+  return {
+    isLoading: state.isLoading,
+  };
+};
+
+export default connect(mapStateToProps, null)(Register);

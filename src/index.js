@@ -3,14 +3,14 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from 'containers/pages/App';
 import * as serviceWorker from './serviceWorker';
-
-import firebaseConfig from "configs/firebase";
-
-console.log(firebaseConfig, '>>>> config fb');
+import { Provider } from "react-redux";
+import store from "configs/redux";
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Provider store={store}>
+      <App />
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );
