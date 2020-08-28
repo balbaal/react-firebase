@@ -3,14 +3,19 @@ import firebase from "configs/firebase";
 import { connect } from "react-redux";
 import { SET_LOADING } from "configs/redux/types";
 
+// Components
+import Button from "components/atoms/Button";
+
 class Register extends React.Component {
   state = {
     email: "",
     password: "",
+    isLoading: false,
   };
 
   _handleOnChange = (e) => {
     this.setState({
+      ...this.state,
       [e.target.name]: e.target.value,
     });
   };
@@ -19,6 +24,19 @@ class Register extends React.Component {
     const { email, password } = this.state;
     const { setLoading } = this.props;
 
+    this.setState({
+      ...this.state,
+      isLoading: true,
+    });
+
+    setTimeout(() => {
+      this.setState({
+        ...this.state,
+        isLoading: false,
+      });
+    }, 3000);
+
+    return;
     setLoading("fakingg");
 
     return;
@@ -40,10 +58,10 @@ class Register extends React.Component {
   };
 
   render() {
-    const { email, password } = this.state;
+    const { email, password, isLoading } = this.state;
 
-    const { isLoading } = this.props;
-    console.log(isLoading, ">>> from global state");
+    // const { isLoading } = this.props;
+    // console.log(isLoading, ">>> from global state");
 
     return (
       <div>
@@ -62,7 +80,9 @@ class Register extends React.Component {
           type="password"
           name="password"
         />
-        <button onClick={this._handleSubmit}>register</button>
+        <Button isLoading={isLoading} onClick={this._handleSubmit}>
+          register
+        </Button>
       </div>
     );
   }
