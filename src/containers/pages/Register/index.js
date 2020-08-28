@@ -1,6 +1,7 @@
 import React from "react";
 import firebase from "configs/firebase";
 import { connect } from "react-redux";
+import { SET_LOADING } from "configs/redux/types";
 
 class Register extends React.Component {
   state = {
@@ -16,6 +17,11 @@ class Register extends React.Component {
 
   _handleSubmit = () => {
     const { email, password } = this.state;
+    const { setLoading } = this.props;
+
+    setLoading("fakingg");
+
+    return;
 
     firebase
       .auth()
@@ -33,13 +39,11 @@ class Register extends React.Component {
       });
   };
 
-  componentDidMount() {
-    const { isLoading } = this.props;
-    console.log(isLoading, ">>> from global state");
-  }
-
   render() {
     const { email, password } = this.state;
+
+    const { isLoading } = this.props;
+    console.log(isLoading, ">>> from global state");
 
     return (
       <div>
@@ -70,4 +74,19 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, null)(Register);
+const handleSetLoading = (value) => (dispatch) => {
+  return setTimeout(() => {
+    dispatch({
+      type: SET_LOADING,
+      value,
+    });
+  }, 2000);
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setLoading: (value) => dispatch(handleSetLoading(value)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Register);
