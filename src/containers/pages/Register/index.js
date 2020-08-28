@@ -1,16 +1,16 @@
 import React from "react";
-import firebase from "configs/firebase";
 import { connect } from "react-redux";
-import { SET_LOADING } from "configs/redux/types";
 
 // Components
 import Button from "components/atoms/Button";
+
+// Actions
+import { actionRegisterUser } from "configs/redux/actions";
 
 class Register extends React.Component {
   state = {
     email: "",
     password: "",
-    isLoading: false,
   };
 
   _handleOnChange = (e) => {
@@ -22,46 +22,14 @@ class Register extends React.Component {
 
   _handleSubmit = () => {
     const { email, password } = this.state;
-    const { setLoading } = this.props;
+    const { actionRegisterUser } = this.props;
 
-    this.setState({
-      ...this.state,
-      isLoading: true,
-    });
-
-    setTimeout(() => {
-      this.setState({
-        ...this.state,
-        isLoading: false,
-      });
-    }, 3000);
-
-    return;
-    setLoading("fakingg");
-
-    return;
-
-    firebase
-      .auth()
-      .createUserWithEmailAndPassword(email, password)
-      .then(function (res) {
-        console.log(res, ">> response success");
-      })
-      .catch(function (error) {
-        // Handle Errors here.
-        var errorCode = error.code;
-        var errorMessage = error.message;
-
-        console.log(error, ">>> error");
-        // ...
-      });
+    actionRegisterUser({ email, password });
   };
 
   render() {
-    const { email, password, isLoading } = this.state;
-
-    // const { isLoading } = this.props;
-    // console.log(isLoading, ">>> from global state");
+    const { email, password } = this.state;
+    const { isLoading } = this.props;
 
     return (
       <div>
@@ -94,19 +62,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-const handleSetLoading = (value) => (dispatch) => {
-  return setTimeout(() => {
-    dispatch({
-      type: SET_LOADING,
-      value,
-    });
-  }, 2000);
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    setLoading: (value) => dispatch(handleSetLoading(value)),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Register);
+export default connect(mapStateToProps, { actionRegisterUser })(Register);

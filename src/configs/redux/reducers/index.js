@@ -9,7 +9,7 @@ const reducer = (state = initialState, action) => {
     case SET_LOADING:
       return {
         ...state,
-        isLoading: action.value,
+        isLoading: action.payload,
       };
 
     default:
