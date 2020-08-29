@@ -1,5 +1,5 @@
 import { SET_LOADING, SET_LOGIN, SET_USER } from "../types";
-import firebase from "configs/firebase";
+import firebaseConfig, { firebaseDB } from "configs/firebase";
 
 export const actionSetLoading = (payload) => (dispatch) => {
   dispatch({
@@ -15,7 +15,7 @@ export const actionRegisterUser = (payload) => (dispatch) => {
       payload: true,
     });
 
-    firebase
+    firebaseConfig
       .auth()
       .createUserWithEmailAndPassword(payload.email, payload.password)
       .then(function (res) {
@@ -50,7 +50,7 @@ export const actionLoginUser = (payload) => (dispatch) => {
       payload: true,
     });
 
-    firebase
+    firebaseConfig
       .auth()
       .signInWithEmailAndPassword(payload.email, payload.password)
       .then(function (res) {
@@ -82,4 +82,24 @@ export const actionLoginUser = (payload) => (dispatch) => {
         reject(false);
       });
   });
+};
+
+export const actionCreatePost = (payload) => (dispatch) => {
+  dispatch({ type: SET_LOADING, payload: true });
+
+  return firebaseDB
+    .ref(`notes/${payload.uid}`)
+    .push({
+      title: payload.title,
+      description: payload.description,
+      date: payload.date,
+    })
+    .then((res) => {
+      console.log(res, ">>> create post");
+      dispatch({ type: SET_LOADING, payload: false });
+    })
+    .catch((err) => {
+      console.log((err, ">>> failed post"));
+      dispatch({ type: SET_LOADING, payload: false });
+    });
 };

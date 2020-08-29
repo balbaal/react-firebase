@@ -4,10 +4,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 // Components
 import Login from "containers/pages/Login";
 import Register from "containers/pages/Register";
-
-const Home = () => {
-  return <div>home page</div>;
-};
+import Home from "containers/pages/Home";
 
 const NotFound = () => {
   return <div>not found page</div>;
