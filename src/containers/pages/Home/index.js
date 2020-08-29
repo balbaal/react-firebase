@@ -1,5 +1,5 @@
 import React from "react";
-import { actionCreatePost } from "configs/redux/actions";
+import { actionCreatePost, actionGetPost } from "configs/redux/actions";
 import { connect } from "react-redux";
 import Button from "components/atoms/Button";
 
@@ -8,6 +8,13 @@ class Home extends React.Component {
     title: "",
     description: "",
   };
+
+  componentDidMount() {
+    const { actionGetPost, posts } = this.props;
+    const userData = JSON.parse(localStorage.getItem("userData"));
+
+    actionGetPost(userData);
+  }
 
   _handleOnChange = (e) => {
     this.setState({
@@ -18,13 +25,14 @@ class Home extends React.Component {
 
   _handleOnSubmit = () => {
     const { title, description } = this.state;
-    const { uid, actionCreatePost } = this.props;
+    const { actionCreatePost } = this.props;
+    const userData = JSON.parse(localStorage.getItem("userData"));
 
     const payload = {
       title,
       description,
       date: new Date().getTime(),
-      uid,
+      uid: userData.uid,
     };
 
     actionCreatePost(payload);
@@ -32,7 +40,9 @@ class Home extends React.Component {
 
   render() {
     const { title, description } = this.state;
-    const { isLoading } = this.props;
+    const { isLoading, posts } = this.props;
+    console.log(isLoading, ">>> loaing");
+    console.log(posts, ">>> post render");
 
     return (
       <div>
@@ -57,12 +67,18 @@ class Home extends React.Component {
         <br />
         <br />
 
-        <div>
-          <h4>title: </h4>
-          <h4>description: </h4>
-          <h4>created: </h4>
-          <hr />
-        </div>
+        {posts.length !== 0
+          ? posts.map((post, i) => {
+              return (
+                <div key={`post-key-${i}`}>
+                  <h4>title: {post.title}</h4>
+                  <h4>description: {post.description}</h4>
+                  <h4>created: {post.date}</h4>
+                  <hr />
+                </div>
+              );
+            })
+          : isLoading && <h3>loading . . .</h3>}
       </div>
     );
   }
@@ -72,7 +88,10 @@ const mapStateToProps = (state) => {
   return {
     uid: state.user.uid,
     isLoading: state.isLoading,
+    posts: state.posts,
   };
 };
 
-export default connect(mapStateToProps, { actionCreatePost })(Home);
+export default connect(mapStateToProps, { actionCreatePost, actionGetPost })(
+  Home
+);

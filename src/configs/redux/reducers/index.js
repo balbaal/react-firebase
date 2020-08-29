@@ -1,9 +1,10 @@
-import { SET_LOADING, SET_LOGIN, SET_USER } from "../types";
+import { SET_LOADING, SET_LOGIN, SET_USER, GET_POST } from "../types";
 
 const initialState = {
   isLoading: false,
   isLogin: false,
   user: {},
+  posts: [],
 };
 
 const reducer = (state = initialState, action) => {
@@ -24,6 +25,12 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         user: action.payload,
+      };
+
+    case GET_POST:
+      return {
+        ...state,
+        posts: action.payload,
       };
 
     default:

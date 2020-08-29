@@ -1,4 +1,4 @@
-import { SET_LOADING, SET_LOGIN, SET_USER } from "../types";
+import { SET_LOADING, SET_LOGIN, SET_USER, GET_POST } from "../types";
 import firebaseConfig, { firebaseDB } from "configs/firebase";
 
 export const actionSetLoading = (payload) => (dispatch) => {
@@ -54,21 +54,23 @@ export const actionLoginUser = (payload) => (dispatch) => {
       .auth()
       .signInWithEmailAndPassword(payload.email, payload.password)
       .then(function (res) {
-        const dataUser = {
+        const userData = {
           email: res.user.email,
           uid: res.user.uid,
           refreshToken: res.user.refreshToken,
           emailVerified: res.user.emailVerified,
         };
 
+        localStorage.setItem("userData", JSON.stringify(userData));
+
         dispatch({ type: SET_LOADING, payload: false });
         dispatch({ type: SET_LOGIN, payload: true });
         dispatch({
           type: SET_USER,
-          payload: dataUser,
+          payload: userData,
         });
 
-        resolve(dataUser);
+        resolve(userData);
       })
       .catch(function (error) {
         // Handle Errors here.
@@ -102,4 +104,22 @@ export const actionCreatePost = (payload) => (dispatch) => {
       console.log((err, ">>> failed post"));
       dispatch({ type: SET_LOADING, payload: false });
     });
+};
+
+export const actionGetPost = (payload) => (dispatch) => {
+  dispatch({ type: SET_LOADING, payload: true });
+
+  const notesGet = firebaseDB.ref(`notes/${payload.uid}`);
+  notesGet.on("value", (snapshot) => {
+    let resNotes = snapshot.val();
+    let resNotesArray = Object.keys(resNotes).map((key, i) => {
+      return {
+        id: key,
+        ...resNotes[key],
+      };
+    });
+
+    dispatch({ type: GET_POST, payload: resNotesArray });
+    dispatch({ type: SET_LOADING, payload: false });
+  });
 };
