@@ -4,7 +4,11 @@ const Button = (props) => {
   if (props.isLoading) {
     return <button disabled>loading . . .</button>;
   } else {
-    return <button onClick={props.onClick}>{props.children}</button>;
+    return (
+      <button style={props.style} onClick={props.onClick}>
+        {props.children}
+      </button>
+    );
   }
 };
 

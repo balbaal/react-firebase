@@ -149,3 +149,13 @@ export const actionUpdatePost = (payload) => (dispatch) => {
       });
     });
 };
+
+export const actionDeletePost = (payload) => (dispatch) => {
+  dispatch({
+    type: SET_LOADING,
+    payload: true,
+  });
+
+  const endPointDelete = firebaseDB.ref(`/notes/${payload.uid}/${payload.id}`);
+  endPointDelete.remove();
+};

@@ -3,6 +3,7 @@ import {
   actionCreatePost,
   actionGetPost,
   actionUpdatePost,
+  actionDeletePost,
 } from "configs/redux/actions";
 import { connect } from "react-redux";
 import Button from "components/atoms/Button";
@@ -67,6 +68,17 @@ class Home extends React.Component {
     });
   };
 
+  _handleOnClickDelete = (e, post) => {
+    e.stopPropagation();
+
+    const { actionDeletePost } = this.props;
+    const userData = JSON.parse(localStorage.getItem("userData"));
+    actionDeletePost({
+      id: post.id,
+      uid: userData.uid,
+    });
+  };
+
   render() {
     const { title, description, buttonText } = this.state;
     const { isLoading, posts } = this.props;
@@ -105,10 +117,18 @@ class Home extends React.Component {
                 <div
                   key={`post-key-${i}`}
                   onClick={() => this._handleOnClickPost(post)}
+                  style={{ position: "relative" }}
                 >
                   <h4>title: {post.title}</h4>
                   <h4>description: {post.description}</h4>
                   <h4>created: {post.date}</h4>
+                  <Button
+                    style={{ position: "absolute", right: 0, top: 0 }}
+                    isLoading={false}
+                    onClick={(e) => this._handleOnClickDelete(e, post)}
+                  >
+                    X
+                  </Button>
                   <hr />
                 </div>
               );
@@ -131,4 +151,5 @@ export default connect(mapStateToProps, {
   actionCreatePost,
   actionGetPost,
   actionUpdatePost,
+  actionDeletePost,
 })(Home);
