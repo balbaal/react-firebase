@@ -112,6 +112,16 @@ export const actionGetPost = (payload) => (dispatch) => {
   const notesGet = firebaseDB.ref(`notes/${payload.uid}`);
   notesGet.on("value", (snapshot) => {
     let resNotes = snapshot.val();
+
+    if (!resNotes) {
+      dispatch({
+        type: SET_LOADING,
+        payload: false,
+      });
+
+      return;
+    }
+
     let resNotesArray = Object.keys(resNotes).map((key, i) => {
       return {
         id: key,

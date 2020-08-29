@@ -111,29 +111,33 @@ class Home extends React.Component {
         <br />
         <br />
 
-        {posts.length !== 0
-          ? posts.map((post, i) => {
-              return (
-                <div
-                  key={`post-key-${i}`}
-                  onClick={() => this._handleOnClickPost(post)}
-                  style={{ position: "relative" }}
+        {posts.length !== 0 ? (
+          posts.map((post, i) => {
+            return (
+              <div
+                key={`post-key-${i}`}
+                onClick={() => this._handleOnClickPost(post)}
+                style={{ position: "relative" }}
+              >
+                <h4>title: {post.title}</h4>
+                <h4>description: {post.description}</h4>
+                <h4>created: {post.date}</h4>
+                <Button
+                  style={{ position: "absolute", right: 0, top: 0 }}
+                  isLoading={false}
+                  onClick={(e) => this._handleOnClickDelete(e, post)}
                 >
-                  <h4>title: {post.title}</h4>
-                  <h4>description: {post.description}</h4>
-                  <h4>created: {post.date}</h4>
-                  <Button
-                    style={{ position: "absolute", right: 0, top: 0 }}
-                    isLoading={false}
-                    onClick={(e) => this._handleOnClickDelete(e, post)}
-                  >
-                    X
-                  </Button>
-                  <hr />
-                </div>
-              );
-            })
-          : isLoading && <h3>loading . . .</h3>}
+                  X
+                </Button>
+                <hr />
+              </div>
+            );
+          })
+        ) : isLoading ? (
+          <h3>loading . . .</h3>
+        ) : (
+          <h3>there is no post !!</h3>
+        )}
       </div>
     );
   }
