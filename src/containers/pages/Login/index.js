@@ -20,11 +20,16 @@ class Login extends React.Component {
     });
   };
 
-  _handleSubmit = () => {
+  _handleSubmit = async () => {
     const { email, password } = this.state;
-    const { actionLoginUser } = this.props;
+    const { actionLoginUser, history } = this.props;
 
-    actionLoginUser({ email, password });
+    try {
+      const resLogin = await actionLoginUser({ email, password });
+      if (resLogin) history.push("/");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   render() {
@@ -34,7 +39,6 @@ class Login extends React.Component {
     return (
       <div>
         <input
-          value={email}
           onChange={this._handleOnChange}
           value={email}
           placeholder="email..."

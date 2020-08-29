@@ -24,7 +24,11 @@ class Register extends React.Component {
     const { email, password } = this.state;
     const { actionRegisterUser } = this.props;
 
-    actionRegisterUser({ email, password });
+    actionRegisterUser({ email, password })
+      .then((res) => {
+        this.setState({ email: "", password: "" });
+      })
+      .catch((err) => console.log(err));
   };
 
   render() {
@@ -36,7 +40,6 @@ class Register extends React.Component {
         <input
           value={email}
           onChange={this._handleOnChange}
-          value={email}
           placeholder="email..."
           type="text"
           name="email"

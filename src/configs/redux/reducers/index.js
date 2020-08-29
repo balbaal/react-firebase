@@ -1,7 +1,9 @@
-import { SET_LOADING } from "../types";
+import { SET_LOADING, SET_LOGIN, SET_USER } from "../types";
 
 const initialState = {
   isLoading: false,
+  isLogin: false,
+  user: {},
 };
 
 const reducer = (state = initialState, action) => {
@@ -10,6 +12,18 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         isLoading: action.payload,
+      };
+
+    case SET_LOGIN:
+      return {
+        ...state,
+        isLogin: action.payload,
+      };
+
+    case SET_USER:
+      return {
+        ...state,
+        user: action.payload,
       };
 
     default:
