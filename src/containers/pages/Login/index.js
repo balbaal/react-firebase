@@ -26,7 +26,10 @@ class Login extends React.Component {
 
     try {
       const resLogin = await actionLoginUser({ email, password });
-      if (resLogin) history.push("/");
+      if (resLogin) {
+        console.log(resLogin, ">>> login result");
+        history.push("/");
+      }
     } catch (error) {
       console.log(error);
     }

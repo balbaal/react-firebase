@@ -54,18 +54,21 @@ export const actionLoginUser = (payload) => (dispatch) => {
       .auth()
       .signInWithEmailAndPassword(payload.email, payload.password)
       .then(function (res) {
-        console.log(res, ">>> response");
+        const dataUser = {
+          email: res.user.email,
+          uid: res.user.uid,
+          refreshToken: res.user.refreshToken,
+          emailVerified: res.user.emailVerified,
+        };
+
         dispatch({ type: SET_LOADING, payload: false });
         dispatch({ type: SET_LOGIN, payload: true });
         dispatch({
           type: SET_USER,
-          payload: {
-            user: res.user.email,
-            id: res.user.uid,
-          },
+          payload: dataUser,
         });
 
-        resolve(true);
+        resolve(dataUser);
       })
       .catch(function (error) {
         // Handle Errors here.
