@@ -1,5 +1,9 @@
 import React from "react";
-import { actionCreatePost, actionGetPost } from "configs/redux/actions";
+import {
+  actionCreatePost,
+  actionGetPost,
+  actionUpdatePost,
+} from "configs/redux/actions";
 import { connect } from "react-redux";
 import Button from "components/atoms/Button";
 
@@ -7,6 +11,8 @@ class Home extends React.Component {
   state = {
     title: "",
     description: "",
+    buttonText: "Submit",
+    id: "",
   };
 
   componentDidMount() {
@@ -24,8 +30,8 @@ class Home extends React.Component {
   };
 
   _handleOnSubmit = () => {
-    const { title, description } = this.state;
-    const { actionCreatePost } = this.props;
+    const { title, description, buttonText, id } = this.state;
+    const { actionCreatePost, actionUpdatePost } = this.props;
     const userData = JSON.parse(localStorage.getItem("userData"));
 
     const payload = {
@@ -35,14 +41,35 @@ class Home extends React.Component {
       uid: userData.uid,
     };
 
-    actionCreatePost(payload);
+    if (buttonText === "Update") {
+      payload.id = id;
+      actionUpdatePost(payload);
+    } else {
+      actionCreatePost(payload);
+    }
+  };
+
+  _handleCancelPost = () => {
+    this.setState({
+      title: "",
+      description: "",
+      buttonText: "Submit",
+      id: "",
+    });
+  };
+
+  _handleOnClickPost = (post) => {
+    this.setState({
+      title: post.title,
+      description: post.description,
+      buttonText: "Update",
+      id: post.id,
+    });
   };
 
   render() {
-    const { title, description } = this.state;
+    const { title, description, buttonText } = this.state;
     const { isLoading, posts } = this.props;
-    console.log(isLoading, ">>> loaing");
-    console.log(posts, ">>> post render");
 
     return (
       <div>
@@ -60,8 +87,13 @@ class Home extends React.Component {
           placeholder="description"
           value={description}
         ></textarea>
+        {buttonText === "Update" && (
+          <Button onClick={this._handleCancelPost} isLoading={isLoading}>
+            Cancel
+          </Button>
+        )}
         <Button isLoading={isLoading} onClick={this._handleOnSubmit}>
-          Submit
+          {buttonText}
         </Button>
 
         <br />
@@ -70,7 +102,10 @@ class Home extends React.Component {
         {posts.length !== 0
           ? posts.map((post, i) => {
               return (
-                <div key={`post-key-${i}`}>
+                <div
+                  key={`post-key-${i}`}
+                  onClick={() => this._handleOnClickPost(post)}
+                >
                   <h4>title: {post.title}</h4>
                   <h4>description: {post.description}</h4>
                   <h4>created: {post.date}</h4>
@@ -92,6 +127,8 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, { actionCreatePost, actionGetPost })(
-  Home
-);
+export default connect(mapStateToProps, {
+  actionCreatePost,
+  actionGetPost,
+  actionUpdatePost,
+})(Home);

@@ -123,3 +123,29 @@ export const actionGetPost = (payload) => (dispatch) => {
     dispatch({ type: SET_LOADING, payload: false });
   });
 };
+
+export const actionUpdatePost = (payload) => (dispatch) => {
+  dispatch({
+    type: SET_LOADING,
+    payload: true,
+  });
+
+  const postGet = firebaseDB.ref(`notes/${payload.uid}/${payload.id}`);
+  postGet
+    .set({
+      title: payload.title,
+      description: payload.description,
+      date: payload.date,
+    })
+    .then((res) => {
+      console.log(res, ">>> update post");
+      dispatch({ type: SET_LOADING, payload: false });
+    })
+    .catch((err) => {
+      console.log(err, ">>> failed update");
+      dispatch({
+        type: SET_LOADING,
+        payload: false,
+      });
+    });
+};
