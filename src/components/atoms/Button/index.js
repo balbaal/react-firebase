@@ -5,7 +5,14 @@ const Button = (props) => {
     return <button disabled>loading . . .</button>;
   } else {
     return (
-      <button style={props.style} onClick={props.onClick}>
+      <button
+        className={[
+          "bg-teal-500 rounded px-6 hover:bg-teal-700 py-2 text-white font-bold",
+          props.className,
+        ].join(" ")}
+        style={props.style}
+        onClick={props.onClick}
+      >
         {props.children}
       </button>
     );
