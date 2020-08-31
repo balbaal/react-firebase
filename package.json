@@ -13,11 +13,13 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
     "redux": "^4.0.5",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "tailwindcss": "^1.7.6"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "build:css": "tailwindcss build src/assets/styles/style.css -o public/dist/style.css",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
