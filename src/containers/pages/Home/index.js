@@ -131,7 +131,11 @@ class Home extends React.Component {
               Cancel
             </Button>
           )}
-          <Button isLoading={isLoading} onClick={this._handleOnSubmit}>
+          <Button
+            className="transition duration-200"
+            isLoading={isLoading}
+            onClick={this._handleOnSubmit}
+          >
             {buttonText}
           </Button>
         </form>

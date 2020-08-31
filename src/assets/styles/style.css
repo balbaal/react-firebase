@@ -3,3 +3,11 @@
 @import "tailwindcss/components";
 
 @import "tailwindcss/utilities";
+
+.btn-primary {
+  @apply .bg-teal-500 .rounded .px-6 .py-2 .text-white .font-bold
+}
+
+.btn-primary:hover {
+  @apply .bg-teal-700
+}

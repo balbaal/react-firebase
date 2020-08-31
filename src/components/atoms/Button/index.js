@@ -7,7 +7,7 @@ const Button = (props) => {
     return (
       <button
         className={[
-          "bg-teal-500 rounded px-6 hover:bg-teal-700 py-2 text-white font-bold",
+          "btn-primary",
           props.className,
         ].join(" ")}
         style={props.style}

@@ -22227,6 +22227,27 @@ video {
           animation: bounce 1s infinite;
 }
 
+.btn-primary {
+  --bg-opacity: 1;
+  background-color: #38b2ac;
+  background-color: rgba(56, 178, 172, var(--bg-opacity));
+  border-radius: 0.25rem;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  --text-opacity: 1;
+  color: #fff;
+  color: rgba(255, 255, 255, var(--text-opacity));
+  font-weight: 700
+}
+
+.btn-primary:hover {
+  --bg-opacity: 1;
+  background-color: #2c7a7b;
+  background-color: rgba(44, 122, 123, var(--bg-opacity))
+}
+
 @media (min-width: 640px) {
   .sm\:container {
     width: 100%;
